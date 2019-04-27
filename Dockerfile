@@ -20,7 +20,8 @@ ENV DOCKER_BUCKET="download.docker.com" \
     DOCKER_COMPOSE_VERSION="1.23.2" \
     GITVERSION_VERSION="3.6.5" \
     NODE_VERSION="10.15.3" \
-    YARN_VERSION="1.13.0"
+    YARN_VERSION="1.13.0" \
+    HUGO_VERSION="0.55.4"
 
 # Install git, SSH, and other utilities
 RUN set -ex \
@@ -159,5 +160,16 @@ RUN set -ex \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
 RUN npm set unsafe-perm true
+
+# Workaround for gcc issue: https://discourse.gohugo.io/t/solved-hugo-v44-extended-and-relocation-errors-on-travis/13029/5
+RUN set -ex \
+  && wget -q -O libstdc++6 http://security.ubuntu.com/ubuntu/pool/main/g/gcc-5/libstdc++6_5.4.0-6ubuntu1~16.04.10_amd64.deb \
+  && dpkg --force-all -i libstdc++6
+
+RUN set -ex \
+  && curl -fsSLO --compressed "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz" \
+  && tar -xzf hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz -C /usr/local/bin/ \
+  && rm hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz \
+  && hugo version
 
 CMD [ "node" ]
