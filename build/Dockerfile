@@ -171,3 +171,16 @@ RUN set -ex \
   && rm hugo_extended_${HUGO_VERSION}_checksums.txt \
   && hugo version
 #****************   END HUGO      *********************************************
+
+#****************   s3deploy      *********************************************
+ENV S3DEPLOY_VERSION="2.3.2"
+
+RUN set -ex \
+  && curl -fsSLO --compressed "https://github.com/bep/s3deploy/releases/download/v${S3DEPLOY_VERSION}/s3deploy_${S3DEPLOY_VERSION}_Linux-64bit.tar.gz" \
+  && curl -fsSLO --compressed "https://github.com/bep/s3deploy/releases/download/v${S3DEPLOY_VERSION}/s3deploy_${S3DEPLOY_VERSION}_checksums.txt" \
+  && grep " s3deploy_${S3DEPLOY_VERSION}_Linux-64bit.tar.gz\$" s3deploy_${S3DEPLOY_VERSION}_checksums.txt | sha256sum -c - \
+  && tar -xzf s3deploy_${S3DEPLOY_VERSION}_Linux-64bit.tar.gz -C /usr/local/bin/ \
+  && rm s3deploy_${S3DEPLOY_VERSION}_Linux-64bit.tar.gz \
+  && rm s3deploy_${S3DEPLOY_VERSION}_checksums.txt \
+  && s3deploy -V
+#****************   END s3deploy  *********************************************
