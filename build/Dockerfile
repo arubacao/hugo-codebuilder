@@ -87,7 +87,7 @@ RUN curl -sS -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-we
  && chmod +x /usr/local/bin/kubectl /usr/local/bin/aws-iam-authenticator /usr/local/bin/ecs-cli
 
 RUN set -ex \
-&& pip3 install awscli boto3
+    && pip3 install awscli boto3
 
 VOLUME /var/lib/docker
 
@@ -203,5 +203,5 @@ RUN set -ex \
     && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt-get -fy install) \
     && rm -rf /tmp/google-chrome-stable_current_amd64.deb \
     && sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' "/opt/google/chrome/google-chrome" \
-&& google-chrome --version
+    && google-chrome --version
 #****************  END HEADLESS BROWSERS     **********************************
