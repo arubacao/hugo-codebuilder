@@ -48,7 +48,7 @@ RUN set -ex \
        libio-pty-perl libserf-1-1 libsvn-perl libsvn1 libtcl8.6 libtimedate-perl \
        libxml2-utils libyaml-perl python-bzrlib python-configobj \
        sgml-base sgml-data subversion tcl tcl8.6 xml-core xmlto xsltproc \
-       tk gettext gettext-base libapr1 libaprutil1 xvfb fluxbox expect parallel \
+       tk gettext gettext-base libapr1 libaprutil1 xvfb expect parallel \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
     && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
     && rm -rf /var/lib/apt/lists/* \
@@ -186,6 +186,17 @@ RUN set -ex \
 #****************   END s3deploy  *********************************************
 
 #****************    HEADLESS BROWSERS     ************************************
+
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+       xvfb fluxbox wmctrl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+COPY start-xvfb.sh /usr/local/bin/
+
+# Install Firefox
 RUN set -ex \
     && apt-add-repository "deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner" \
     && apt-add-repository ppa:malteworld/ppa && apt-get update \
