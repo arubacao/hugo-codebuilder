@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-launch_xvfb() {
+xvfb_start() {
     # Set defaults if the user did not specify envs.
     export DISPLAY=${XVFB_DISPLAY:-:1}
     local screen=${XVFB_SCREEN:-0}
@@ -23,7 +23,11 @@ launch_xvfb() {
     done
 }
 
-launch_window_manager() {
+xvfb_stop() {
+    killall Xvfb
+}
+
+fluxbox_start() {
     local timeout=${XVFB_TIMEOUT:-50}
 
     # Start and wait for either fluxbox to be fully up or we hit the timeout.
@@ -41,5 +45,21 @@ launch_window_manager() {
     done
 }
 
-launch_xvfb
-launch_window_manager
+fluxbox_stop() {
+    killall fluxbox
+}
+
+xvfb_start
+fluxbox_start
+
+# Start the command and save its exit status.
+set +e
+eval "$@"
+RETVAL=$?
+set -e
+
+#fluxbox_stop
+#xvfb_stop
+
+# Return the executed command's exit status.
+exit $RETVAL

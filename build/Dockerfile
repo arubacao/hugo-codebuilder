@@ -187,14 +187,15 @@ RUN set -ex \
 
 #****************    HEADLESS BROWSERS     ************************************
 
+# Install nessecary GUI tools
+COPY xvfb-fluxbox-run.sh /usr/local/bin/xvfb-fluxbox-run
 RUN set -ex \
+    && chmod +x /usr/local/bin/xvfb-fluxbox-run \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-       xvfb fluxbox wmctrl \
+       xvfb fluxbox wmctrl psmisc \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
-
-COPY start-xvfb.sh /usr/local/bin/
 
 # Install Firefox
 RUN set -ex \
