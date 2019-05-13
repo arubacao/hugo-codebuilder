@@ -98,7 +98,7 @@ COPY dockerd-entrypoint.sh /usr/local/bin/
 
 #****************        NODE     *********************************************
 ENV NODE_VERSION="10.15.3" \
-    YARN_VERSION="1.15.2"
+    YARN_VERSION="1.60.0"
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
