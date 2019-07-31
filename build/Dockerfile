@@ -162,7 +162,7 @@ RUN set -ex \
 #****************   END NODE      *********************************************
 
 #****************       HUGO      *********************************************
-ENV HUGO_VERSION="0.56.2"
+ENV HUGO_VERSION="0.56.3"
 
 RUN set -ex \
   && curl -fsSLO --compressed "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz" \
