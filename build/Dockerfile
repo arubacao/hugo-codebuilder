@@ -99,7 +99,7 @@ COPY ssh_config /root/.ssh/config
 COPY dockerd-entrypoint.sh /usr/local/bin/
 
 #****************        NODE     *********************************************
-ENV NODE_VERSION="10.16.0" \
+ENV NODE_VERSION="10.16.2" \
     YARN_VERSION="1.17.3"
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
