@@ -3,8 +3,8 @@ FROM ubuntu:18.04
 #****************        Utilities     *********************************************
 ENV DOCKER_BUCKET="download.docker.com" \
     DOCKER_CHANNEL="stable" \
-    DOCKER_VERSION="18.09.6" \
-    DOCKER_SHA256="1f3f6774117765279fce64ee7f76abbb5f260264548cf80631d68fb2d795bb09" \
+    DOCKER_VERSION="19.03.1" \
+    DOCKER_SHA256="6e7d8e24ee46b13d7547d751696d01607d19c8224c1b2c867acc8c779e77734b" \
     DIND_COMMIT="3b5fac462d21ca164b3778647420016315289034" \
     DOCKER_COMPOSE_VERSION="1.24.0" \
     GITVERSION_VERSION="4.0.0" \
@@ -15,7 +15,9 @@ ENV DOCKER_BUCKET="download.docker.com" \
 RUN set -ex \
     && echo 'Acquire::CompressionTypes::Order:: "gz";' > /etc/apt/apt.conf.d/99use-gzip-compression \
     && apt-get update \
-    && apt install -y apt-transport-https \
+    && apt install -y apt-transport-https gnupg ca-certificates \
+    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
+    && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
     && apt-get update \
     && apt-get install software-properties-common -y --no-install-recommends \
     && apt-add-repository -y ppa:git-core/ppa \
@@ -29,8 +31,8 @@ RUN set -ex \
     && ssh-keyscan -t rsa,dsa -H bitbucket.org >> ~/.ssh/known_hosts \
     && chmod 600 ~/.ssh/known_hosts \
     && apt-get install -y --no-install-recommends \
-       wget python3 python3-dev python3-pip python3-setuptools fakeroot ca-certificates jq \
-       netbase gnupg dirmngr bzr mercurial procps \
+       wget python3 python3-dev python3-pip python3-setuptools fakeroot jq \
+       netbase dirmngr bzr mercurial procps \
        tar gzip zip autoconf automake \
        bzip2 file g++ gcc imagemagick \
        libbz2-dev libc6-dev libcurl4-openssl-dev libdb-dev \
@@ -50,8 +52,6 @@ RUN set -ex \
        sgml-base sgml-data subversion tcl tcl8.6 xml-core xmlto xsltproc \
        tk gettext gettext-base libapr1 libaprutil1 xvfb expect parallel \
        locales rsync \
-    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
-    && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
